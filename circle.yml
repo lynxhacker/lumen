@@ -30,7 +30,6 @@ dependencies:
     #- npm install coffeescript # install from a different package manager
     #- gem uninstall bundler # use a custom version of bundler
     #- gem install bundler --pre
-    - pecl install mongo
     - cp config/custom.ini
     - echo "memory_limit = 64M" > /opt/circleci/php/$(phpenv global)/etc/conf.d/memory.ini
     - cp config/custom.ini /opt/circleci/php/$(phpenv global)/etc/conf.d/

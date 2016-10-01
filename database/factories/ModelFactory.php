@@ -11,9 +11,12 @@
 |
 */
 
-$factory->define(App\User::class, function ($faker) {
-    return [
-        'name' => $faker->name,
-        'email' => $faker->email,
-    ];
-});
+$factory->define(App\Api\V1\Models\Collections::class, function ($faker) {
+	$types = ['travel', 'news']; 
+	return [
+		'id' => $faker->uuid, 
+		'type' => $faker->randomElement($types), 
+		'position' => $faker->randomDigit(), 
+		'page_id' => $faker->uuid, 
+	]; 
+}); 

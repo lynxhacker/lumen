@@ -84,9 +84,40 @@ $app->routeMiddleware([
 */
 
 // $app->register(App\Providers\AppServiceProvider::class);
-// $app->register(App\Providers\AuthServiceProvider::class);
+$app->register(App\Providers\AuthServiceProvider::class);
 // $app->register(App\Providers\EventServiceProvider::class);
+$app->register(Dingo\Api\Provider\LumenServiceProvider::class);
+$app->register(\Tymon\JWTAuth\Providers\LumenServiceProvider::class);
 
+$app['Dingo\Api\Auth\Auth']->extend('oauth', function ($app) {
+   return new Dingo\Api\Auth\Provider\JWT($app['Tymon\JWTAuth\JWTAuth']);
+});
+
+$app['Dingo\Api\Transformer\Factory']->setAdapter(function ($app) {
+    $fractal = new League\Fractal\Manager;
+
+    $fractal->setSerializer(new League\Fractal\Serializer\JsonApiSerializer);
+
+    return new Dingo\Api\Transformer\Adapter\Fractal($fractal);
+});
+
+$app['Dingo\Api\Exception\Handler']->setErrorFormat([
+    'error' => [
+        'message' => ':message',
+        'errors' => ':errors',
+        'code' => ':code',
+        'status_code' => ':status_code',
+        'debug' => ':debug'
+    ]
+]);
+
+/*app('Dingo\Api\Auth\Auth')->extend('basic', function ($app) {
+    return new Dingo\Api\Auth\Provider\Basic($app['auth'], 'email');
+});*/
+
+app('Dingo\Api\Auth\Auth')->extend('jwt', function($app) {
+    return new Dingo\Api\Auth\Provider\JWT($app['Tymon\JWTAuth\JWTAuth']);
+});
 /*
 |--------------------------------------------------------------------------
 | Load The Application Routes
